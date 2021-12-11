@@ -12,6 +12,7 @@ import org.bukkit.permissions.PermissionAttachmentInfo;
 import org.bukkit.plugin.Plugin;
 
 import java.util.Set;
+import java.util.UUID;
 
 final class ConsoleProxy implements ConsoleCommandSender {
     private final CommandSender source;
@@ -32,9 +33,23 @@ final class ConsoleProxy implements ConsoleCommandSender {
     }
 
     @Override
-    public void sendMessage(String[] messages) {
+    public void sendMessage(String... messages) {
         if (!silent) {
             source.sendMessage(messages);
+        }
+    }
+
+    @Override
+    public void sendMessage(UUID sender, String message) {
+        if (!silent) {
+            source.sendMessage(sender, message);
+        }
+    }
+
+    @Override
+    public void sendMessage(UUID sender, String... message) {
+        if (!silent) {
+            source.sendMessage(sender, message);
         }
     }
 
@@ -153,6 +168,13 @@ final class ConsoleProxy implements ConsoleCommandSender {
     public void sendRawMessage(String message) {
         if (!silent && source instanceof Conversable) {
             ((Conversable) source).sendRawMessage(message);
+        }
+    }
+
+    @Override
+    public void sendRawMessage(UUID sender, String message) {
+        if (!silent && source instanceof Conversable) {
+            ((Conversable) source).sendRawMessage(sender, message);
         }
     }
 }
